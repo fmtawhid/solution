@@ -1,0 +1,26 @@
+name: Extract ZIP in Repository
+
+on:
+  push:
+    branches:
+      - main  # যখন main branch-এ কিছু push করা হবে, তখন এটি রান হবে
+
+jobs:
+  extract_zip:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Extract ZIP File
+        run: |
+          unzip your_file.zip -d extracted_files
+          rm your_file.zip  # আনজিপের পর ZIP ফাইল ডিলিট করা হবে (অপশনাল)
+
+      - name: Commit Extracted Files
+        run: |
+          git config --global user.name "github-actions"
+          git config --global user.email "github-actions@github.com"
+          git add extracted_files
+          git commit -m "Unzipped files added"
+          git push
